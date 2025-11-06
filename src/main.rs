@@ -63,11 +63,11 @@ fn main() -> Result<(), slint::PlatformError> {
 
     let panel_23 = create_panel_23(configs[10], 23)?;
 
-    // ИСПРАВЛЕНИЕ: Показываем главное меню СРАЗУ (как в старой версии)
-    main_window.window().show()?;
+    // ИСПРАВЛЕНИЕ: Показываем главное меню СРАЗУ сверху экрана
     main_window.window().set_position(WindowPosition::Logical(
-        LogicalPosition::new(0.0, shift_y)
+        LogicalPosition::new(0.0, 0.0)
     ));
+    main_window.window().show()?;
 
     for panel in &panels {
         panel.window().show()?;
