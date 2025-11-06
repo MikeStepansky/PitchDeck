@@ -1,0 +1,33 @@
+[package]
+name = "myall_slint"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+slint = { version = "1.13.1", features = ["renderer-femtovg", "raw-window-handle-06"] }
+wry = "0.46"
+tao = "0.30"
+
+[build-dependencies]
+slint-build = "1.13.1"
+
+# Windows-only зависимости (иконка .exe)
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1"
+
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+
+# Windows иконка
+[package.metadata.bundle]
+icon = [
+    "MyALL_icon.ico",   # Windows
+    "MyALL_icon.icns",  # macOS
+    "MyALL_icon.png"    # Linux
+]
