@@ -1,0 +1,309 @@
+import { PanelContent } from "content.slint";
+
+component MenuButton inherits Rectangle {
+    in property <string> label;
+    callback clicked;
+
+    background: rgb(156, 171, 196);
+    width: 24px;
+    height: 24px;
+
+    TouchArea {
+        clicked => { root.clicked(); }
+    }
+
+    Text {
+        text: label;
+        color: white;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+    }
+}
+
+export component MainWindow inherits Window {
+    callback toggle-panel-1();
+    callback toggle-panel-2();
+    callback toggle-panel-3();
+    callback toggle-panel-4();
+    callback toggle-panel-5();
+    callback toggle-panel-6();
+    callback toggle-panel-7();
+    callback toggle-panel-8();
+    callback toggle-panel-11();
+    callback toggle-panel-12();
+    callback toggle-panel-13();
+    callback toggle-panel-14();
+
+    callback toggle-webview-23();
+    callback change-webview-url-23();
+
+    in property <string> status-text: "Панели 1-8";
+    in property <length> window-width;
+    in property <length> menu-height;
+    in property <length> shift-y: 0px;
+
+    no-frame: true;
+    always-on-top: true;
+    background: rgb(235, 243, 255);
+    width: window-width;
+    height: menu-height;
+
+    // Линия внизу
+    Rectangle {
+        x: 0px;
+        y: menu-height - 1px;
+        width: parent.width;
+        height: 1px;
+        background: rgb(227, 227, 227);
+    }
+
+    MenuButton {
+        label: "1";
+        x: 24px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-1(); }
+    }
+
+    MenuButton {
+        label: "2";
+        x: 24px + 32px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-2(); }
+    }
+
+    MenuButton {
+        label: "3";
+        x: 24px + 64px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-3(); }
+    }
+
+    MenuButton {
+        label: "4";
+        x: 24px + 96px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-4(); }
+    }
+
+    MenuButton {
+        label: "5";
+        x: 24px + 128px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-5(); }
+    }
+
+    MenuButton {
+        label: "11";
+        x: 24px + 128px + 144px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-11(); }
+    }
+
+    MenuButton {
+        label: "12";
+        x: 24px + 128px + 144px + 32px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-12(); }
+    }
+
+    MenuButton {
+        label: "13";
+        x: 24px + 128px + 144px + 64px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-13(); }
+    }
+
+    MenuButton {
+        label: "14";
+        x: 24px + 128px + 144px + 96px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-14(); }
+    }
+
+    MenuButton {
+        label: "W2";
+        x: 24px + 128px + 144px + 128px + 32px;
+        y: (parent.height - self.height) / 2;
+        clicked => {
+            root.toggle-webview-23();
+        }
+    }
+
+    MenuButton {
+        label: "V2";
+        x: 24px + 128px + 144px + 128px + 32px + 48px;
+        y: (parent.height - self.height) / 2;
+        clicked => {
+            root.change-webview-url-23();
+        }
+    }
+
+    MenuButton {
+        label: "8";
+        x: parent.width - self.width - 24px - 64px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-8(); }
+    }
+
+    MenuButton {
+        label: "7";
+        x: parent.width - self.width - 24px - 32px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-7(); }
+    }
+
+    MenuButton {
+        label: "6";
+        x: parent.width - self.width - 24px;
+        y: (parent.height - self.height) / 2;
+        clicked => { root.toggle-panel-6(); }
+    }
+}
+
+export component SidePanel inherits Window {
+    in property <length> panel-width;
+    in property <length> panel-height;
+    in property <length> target-x: 0px;
+    in property <color> panel-color: rgb(245, 244, 237);
+    in property <float> panel-opacity: 1.0;
+    in property <length> shadow-offset-x;
+    in property <length> shadow-blur: 16px;
+    in property <length> shadow-width-total: 16px;
+    in property <bool> is-right-panel: false;
+    in property <int> panel-id: 0;
+
+    callback close-clicked();
+
+    no-frame: true;
+    always-on-top: true;
+    background: transparent;
+
+    width: panel-width + shadow-width-total;
+    height: panel-height;
+
+    Rectangle {
+        background: panel-color;
+        opacity: panel-opacity;
+        width: panel-width;
+        height: panel-height;
+
+        x: target-x;
+        y: 0px;
+
+        drop-shadow-offset-x: shadow-offset-x;
+        drop-shadow-offset-y: 0px;
+        drop-shadow-blur: shadow-blur;
+        drop-shadow-color: rgba(0, 0, 0, 0.3);
+
+        PanelContent {
+            width: parent.width;
+            height: parent.height;
+            panel-id: root.panel-id;
+        }
+
+        // Кнопка закрытия для Панели 1
+        if root.panel-id == 1: Rectangle {
+            x: parent.width - 40px;
+            y: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 14px;
+            background: rgb(220, 80, 80);
+
+            TouchArea {
+                clicked => { root.close-clicked(); }
+            }
+
+            Text {
+                text: "✕";
+                color: white;
+                font-size: 16px;
+                font-weight: 700;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+
+        animate x {
+            duration: 240ms;
+            easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    }
+}
+
+export component DoublePanel inherits Window {
+    in property <length> panel-width;
+    in property <length> panel-height;
+    in property <length> shadow-offset-x;
+    in property <length> shadow-blur;
+
+    no-frame: true;
+    always-on-top: true;
+    background: transparent;
+
+    width: panel-width + shadow-blur * 2;
+    height: panel-height;
+
+    Rectangle {
+        background: rgb(255, 255, 255);
+        width: panel-width;
+        height: panel-height;
+        x: 0px;
+        y: 0px;
+
+        drop-shadow-offset-x: shadow-offset-x;
+        drop-shadow-offset-y: 0px;
+        drop-shadow-blur: shadow-blur;
+        drop-shadow-color: rgba(0, 0, 0, 0.3);
+    }
+}
+
+export component Panel23 inherits Window {
+    in property <length> panel-width;
+    in property <length> panel-height;
+    in property <length> shadow-offset-x;
+    in property <length> shadow-blur;
+
+    no-frame: true;
+    always-on-top: true;
+    background: transparent;
+
+    width: panel-width + shadow-blur * 2;
+    height: panel-height;
+}
+
+// ============ ТРИГГЕРНОЕ ОКНО У ЛЕВОЙ ГРАНИЦЫ ============
+export component TriggerWindow inherits Window {
+    in property <length> trigger-height;
+    out property <bool> cursor-in-zone: ta.has-hover;
+
+    no-frame: true;
+    always-on-top: true;
+    background: rgb(0, 100, 255);  // Синий для отладки
+
+    width: 5px;
+    height: trigger-height;
+
+    // Индикатор когда курсор в зоне
+    if ta.has-hover: Rectangle {
+        x: 5px;
+        y: parent.height / 2 - 20px;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 0, 0.8);
+        border-radius: 20px;
+
+        Text {
+            text: "⏱";
+            font-size: 24px;
+            horizontal-alignment: center;
+            vertical-alignment: center;
+        }
+    }
+
+    ta := TouchArea {
+        width: parent.width;
+        height: parent.height;
+        mouse-cursor: pointer;
+    }
+}

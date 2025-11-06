@@ -1,0 +1,356 @@
+// ========== КОМПОНЕНТЫ ==========
+
+// Компонент для элемента списка задач
+component TodoItem inherits Rectangle {
+    in property <string> task-text;
+    in property <bool> completed;
+
+    height: 40px;
+    background: completed ? rgb(230, 245, 230) : white;
+    border-radius: 4px;
+
+    HorizontalLayout {
+        padding: 8px;
+        spacing: 8px;
+
+        Rectangle {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            background: completed ? rgb(76, 175, 80) : rgb(200, 200, 200);
+
+            if completed: Text {
+                text: "✓";
+                color: white;
+                font-size: 14px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+
+        Text {
+            text: task-text;
+            color: completed ? rgb(120, 120, 120) : rgb(40, 40, 40);
+            vertical-alignment: center;
+            horizontal-alignment: left;
+        }
+    }
+}
+
+// Компонент для карточки контакта
+component ContactCard inherits Rectangle {
+    in property <string> name;
+    in property <string> role;
+    in property <color> avatar-color;
+
+    height: 70px;
+    background: white;
+    border-radius: 6px;
+
+    HorizontalLayout {
+        padding: 12px;
+        spacing: 12px;
+
+        Rectangle {
+            width: 46px;
+            height: 46px;
+            border-radius: 23px;
+            background: avatar-color;
+
+            Text {
+                text: "👤";
+                font-size: 24px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+
+        VerticalLayout {
+            alignment: start;
+            spacing: 4px;
+
+            Text {
+                text: name;
+                color: rgb(40, 40, 40);
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+            Text {
+                text: role;
+                color: rgb(120, 120, 120);
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+// Компонент для настройки
+component SettingItem inherits Rectangle {
+    in property <string> setting-name;
+    in property <bool> enabled;
+
+    height: 50px;
+    background: white;
+
+    HorizontalLayout {
+        padding: 12px;
+
+        Text {
+            text: setting-name;
+            color: rgb(40, 40, 40);
+            vertical-alignment: center;
+            horizontal-alignment: left;
+        }
+
+        Rectangle {
+            width: 50px;
+            height: 26px;
+            border-radius: 13px;
+            background: enabled ? rgb(76, 175, 80) : rgb(200, 200, 200);
+
+            Rectangle {
+                width: 22px;
+                height: 22px;
+                x: enabled ? 26px : 2px;
+                y: 2px;
+                border-radius: 11px;
+                background: white;
+
+                animate x {
+                    duration: 150ms;
+                    easing: ease-in-out;
+                }
+            }
+        }
+    }
+}
+
+// Компонент для графика
+component ChartPlaceholder inherits Rectangle {
+    in property <string> chart-title;
+
+    background: white;
+    border-radius: 8px;
+    height: 200px;
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        Text {
+            text: chart-title;
+            color: rgb(40, 40, 40);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        HorizontalLayout {
+            spacing: 8px;
+            alignment: end;
+
+            Rectangle {
+                width: 30px;
+                height: 60px;
+                background: rgb(33, 150, 243);
+                border-radius: 4px;
+            }
+            Rectangle {
+                width: 30px;
+                height: 90px;
+                background: rgb(76, 175, 80);
+                border-radius: 4px;
+            }
+            Rectangle {
+                width: 30px;
+                height: 45px;
+                background: rgb(255, 152, 0);
+                border-radius: 4px;
+            }
+            Rectangle {
+                width: 30px;
+                height: 110px;
+                background: rgb(156, 39, 176);
+                border-radius: 4px;
+            }
+        }
+    }
+}
+
+// Компонент для placeholder изображения
+component ImagePlaceholder inherits Rectangle {
+    in property <string> label;
+    in property <color> placeholder-color;
+
+    height: 120px;
+    background: placeholder-color;
+    border-radius: 8px;
+
+    Text {
+        text: label;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+}
+
+// Компонент для заметки
+component NoteItem inherits Rectangle {
+    in property <string> note-title;
+    in property <string> note-preview;
+
+    height: 90px;
+    background: rgb(255, 253, 231);
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: rgb(255, 235, 59);
+
+    VerticalLayout {
+        padding: 12px;
+        spacing: 6px;
+
+        Text {
+            text: note-title;
+            color: rgb(40, 40, 40);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        Text {
+            text: note-preview;
+            color: rgb(100, 100, 100);
+            font-size: 12px;
+            wrap: word-wrap;
+        }
+    }
+}
+
+// ========== КОНТЕНТ ПАНЕЛЕЙ ==========
+
+export component PanelContent inherits Rectangle {
+    in property <int> panel-id;
+
+    background: rgb(245, 244, 237);
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        Text {
+            text: panel-id == 1 ? "📝 Задачи" :
+                  panel-id == 2 ? "🎵 Медиа" :
+                  panel-id == 3 ? "⚙️ Настройки" :
+                  panel-id == 4 ? "📊 Статистика" :
+                  panel-id == 5 ? "🖼️ Галерея" :
+                  panel-id == 6 ? "📅 Календарь" :
+                  panel-id == 7 ? "📄 Заметки" :
+                  panel-id == 8 ? "👥 Контакты" : "";
+            color: rgb(40, 40, 40);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        if panel-id == 1: VerticalLayout {
+            spacing: 8px;
+            TodoItem { task-text: "Проверить анимацию"; completed: true; }
+            TodoItem { task-text: "Оптимизировать тени"; completed: true; }
+            TodoItem { task-text: "Добавить контент"; completed: false; }
+            TodoItem { task-text: "Тестировать производительность"; completed: false; }
+        }
+
+        if panel-id == 2: VerticalLayout {
+            spacing: 16px;
+
+            Rectangle {
+                background: rgb(156, 39, 176);
+                height: 150px;
+                border-radius: 8px;
+
+                Text {
+                    text: "🎵";
+                    font-size: 48px;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+
+            Text {
+                text: "Сейчас играет:\nРасслабляющая музыка";
+                color: rgb(60, 60, 60);
+                font-size: 14px;
+                horizontal-alignment: center;
+            }
+        }
+
+        if panel-id == 3: VerticalLayout {
+            spacing: 8px;
+            SettingItem { setting-name: "Уведомления"; enabled: true; }
+            SettingItem { setting-name: "Автосохранение"; enabled: true; }
+            SettingItem { setting-name: "Тёмная тема"; enabled: false; }
+            SettingItem { setting-name: "Звук"; enabled: true; }
+        }
+
+        if panel-id == 4: VerticalLayout {
+            spacing: 16px;
+            ChartPlaceholder { chart-title: "Активность за неделю"; }
+            Text {
+                text: "Всего задач: 24\nВыполнено: 18\nОсталось: 6";
+                color: rgb(80, 80, 80);
+                font-size: 14px;
+            }
+        }
+
+        if panel-id == 5: VerticalLayout {
+            spacing: 12px;
+            ImagePlaceholder { label: "Фото 1"; placeholder-color: rgb(156, 39, 176); }
+            ImagePlaceholder { label: "Фото 2"; placeholder-color: rgb(3, 169, 244); }
+            ImagePlaceholder { label: "Фото 3"; placeholder-color: rgb(255, 152, 0); }
+        }
+
+        if panel-id == 6: VerticalLayout {
+            spacing: 12px;
+            Text {
+                text: "Октябрь 2025";
+                color: rgb(40, 40, 40);
+                font-size: 18px;
+                font-weight: 600;
+                horizontal-alignment: center;
+            }
+
+            GridLayout {
+                spacing: 4px;
+                Row {
+                    Rectangle { background: rgb(200, 220, 240); height: 40px; Text { text: "ПН"; horizontal-alignment: center; vertical-alignment: center; } }
+                    Rectangle { background: rgb(200, 220, 240); height: 40px; Text { text: "ВТ"; horizontal-alignment: center; vertical-alignment: center; } }
+                    Rectangle { background: rgb(200, 220, 240); height: 40px; Text { text: "СР"; horizontal-alignment: center; vertical-alignment: center; } }
+                }
+                Row {
+                    Rectangle { background: white; height: 40px; Text { text: "21"; horizontal-alignment: center; vertical-alignment: center; } }
+                    Rectangle { background: rgb(76, 175, 80); height: 40px; Text { text: "22"; color: white; horizontal-alignment: center; vertical-alignment: center; } }
+                    Rectangle { background: white; height: 40px; Text { text: "23"; horizontal-alignment: center; vertical-alignment: center; } }
+                }
+            }
+        }
+
+        if panel-id == 7: VerticalLayout {
+            spacing: 10px;
+            NoteItem {
+                note-title: "Идея проекта";
+                note-preview: "Разработать систему с выдвигающимися панелями...";
+            }
+            NoteItem {
+                note-title: "Список покупок";
+                note-preview: "Молоко, хлеб, яйца, кофе";
+            }
+        }
+
+        if panel-id == 8: VerticalLayout {
+            spacing: 10px;
+            ContactCard { name: "Алексей Иванов"; role: "Разработчик"; avatar-color: rgb(33, 150, 243); }
+            ContactCard { name: "Мария Петрова"; role: "Дизайнер"; avatar-color: rgb(233, 30, 99); }
+            ContactCard { name: "Дмитрий Сидоров"; role: "Менеджер"; avatar-color: rgb(76, 175, 80); }
+        }
+    }
+}
